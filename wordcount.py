@@ -5,7 +5,7 @@ from tkinter import filedialog
 
 def get_pdf_path():
     root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    root.withdraw()
     pdf_path = filedialog.askopenfilename(
         title="Select PDF file",
         filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")]
@@ -25,16 +25,13 @@ for page in reader.pages:
     text += page.extract_text() or ""
 
 def clean_pdf_page_numbers(text):
-    # Remove lines that are only page numbers, like: 1
-    pattern1 = "(?m)^\\s*\\d{1,3}\\s*$"
+    pattern1 = "(?m)^\\s*\\d{1,3}\\s*$" # Removes page numbers
     text = re.sub(pattern1, "", text)
 
-    # Remove page numbers glued to the beginning of a line, like: 1She, 2KopeG, 3“I
-    pattern2 = "(?m)^\\s*\\d{1,3}(?=[A-ZÁÉÍÓÖŐÚÜŰ“\"'])"
+    pattern2 = "(?m)^\\s*\\d{1,3}(?=[A-ZÁÉÍÓÖŐÚÜŰ“\"'])" # Removes numbers attached to words
     text = re.sub(pattern2, "", text)
 
-    #Remove page labels like: Page 1 or Page 1 of 10
-    text = re.sub(r"(?mi)^\s*Page\s+\d+(\s+of\s+\d+)?\s*$", "", text)
+    text = re.sub(r"(?mi)^\s*Page\s+\d+(\s+of\s+\d+)?\s*$", "", text) # Removes page labels
 
     return text
 
